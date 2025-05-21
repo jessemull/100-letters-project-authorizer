@@ -279,7 +279,7 @@ The rollback pipeline is triggered manually via a workflow dispatch event, allow
 
 ## Cognito Access Token
 
-All write routes are protected via Cognito User Pools. A valid ID token is required to use these endpoints and access the UI.
+All write routes are protected via Cognito User Pools. A valid access token is required to use these endpoints and access the UI.
 
 ### Generating An Access Token
 
