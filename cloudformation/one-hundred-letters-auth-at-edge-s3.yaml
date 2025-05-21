@@ -1,0 +1,27 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Parameters:
+  Environment:
+    Type: String
+    Default: "dev"
+    Description: "The environment for the deployment (dev or prod)"
+    AllowedValues:
+      - dev
+      - prod
+    ConstraintDescription: "Must be either 'dev' or 'prod'."
+  OneHundredLettersAuthorizerBucketName:
+    Type: String
+    Default: "100-letters-project-authorizer"
+    Description: "S3 bucket for storing authorizer lambda deployment"
+
+Resources:
+  OneHundredLettersAuthorizerBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: !Sub "${OneHundredLettersAuthorizerBucketName}-${Environment}"
+
+Outputs:
+  OneHundredLettersAuthorizerBucketName:
+    Value: !Ref OneHundredLettersAuthorizerBucket
+    Export:
+      Name: !Sub "OneHundredLettersAuthorizerBucketName-${Environment}"
