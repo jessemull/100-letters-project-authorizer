@@ -15,7 +15,7 @@ function hasScope(scope: string, required: string): boolean {
   return scope.split(" ").includes(required);
 }
 
-const resourceArn = `arn:aws:execute-api:us-west-2:771265364914:jvjtdyrxij/dev/*/*`;
+export const resourceArn = `arn:aws:execute-api:us-west-2:771265364914:jvjtdyrxij/dev/*/*`;
 
 export async function handler(
   event: APIGatewayTokenAuthorizerEvent,

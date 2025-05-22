@@ -1,5 +1,5 @@
 import type { APIGatewayTokenAuthorizerEvent } from "aws-lambda";
-import { handler } from "./index";
+import { handler, resourceArn } from "./index";
 import { jwtVerify } from "jose";
 
 process.env.COGNITO_USER_POOL_ID = "us-west-2_fakePool";
@@ -110,7 +110,7 @@ describe("handler", () => {
           {
             Action: "execute-api:Invoke",
             Effect: "Allow",
-            Resource: baseEvent.methodArn,
+            Resource: resourceArn,
           },
         ],
       },
