@@ -65,7 +65,7 @@
     "format:check": "prettier --check .",
     "lint": "eslint --ext .ts",
     "lint:fix": "eslint --ext .ts --fix",
-    "package": "cd dist && zip -rq one-hundred-letters-authorizer.zip ./*",
+    "package": "cd dist && zip -rq authorizer.zip ./*",
     "prebuild": "npm run clean",
     "prepare": "husky",
     "test": "jest",
