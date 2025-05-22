@@ -37,7 +37,7 @@ Resources:
   AllowApiGatewayToInvokeAuthAtEdge:
     Type: AWS::Lambda::Permission
     Properties:
-      FunctionName: !GetAtt MyLambdaVersion.FunctionArn
+      FunctionName: !Ref OneHundredLettersAuthorizerFunction
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
 
