@@ -117,7 +117,7 @@ jobs:
             --stack-name $STACK_NAME \
             --template-body file://$TEMPLATE_FILE \
             --parameters \
-              "ParameterKey=S3Key,ParameterValue=100-letters-project-authorizer/${ARTIFACT_NAME}" \
+              "ParameterKey=S3Key,ParameterValue=authorizer/${ARTIFACT_NAME}" \
               "ParameterKey=Environment,ParameterValue=${ENVIRONMENT}" \
             --change-set-name $CHANGE_SET_NAME \
             --change-set-type $CHANGE_SET_TYPE \
