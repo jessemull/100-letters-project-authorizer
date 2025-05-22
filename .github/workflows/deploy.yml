@@ -74,7 +74,7 @@ jobs:
       - name: Upload Lambda to S3
         run: |
           S3_BUCKET="100-letters-project-authorizer-${{ github.event.inputs.environment }}"
-          aws s3 cp "dist/one-hundred-letters-authorizer.zip" s3://${S3_BUCKET}/authorizer/${ARTIFACT_NAME} --region us-west-2
+          aws s3 cp "dist/authorizer.zip" s3://${S3_BUCKET}/authorizer/${ARTIFACT_NAME} --region us-west-2
 
       - name: Check Change Set Update/Create 
         id: change_set_type
