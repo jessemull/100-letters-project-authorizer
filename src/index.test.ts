@@ -52,7 +52,7 @@ describe("handler", () => {
 
   it("throws if jwtVerify throws (invalid token)", async () => {
     mockedJwtVerify.mockRejectedValueOnce(new Error("Invalid token"));
-    await expect(handler(baseEvent)).rejects.toThrow("Unauthorized!");
+    await expect(handler(baseEvent)).rejects.toThrow("Unauthorized");
   });
 
   it("throws if token is not an access token", async () => {
@@ -64,7 +64,7 @@ describe("handler", () => {
         scope: "aws.cognito.signin.user.admin",
       },
     });
-    await expect(handler(baseEvent)).rejects.toThrow("Unauthorized!");
+    await expect(handler(baseEvent)).rejects.toThrow("Unauthorized");
   });
 
   it("throws if scope is missing", async () => {
@@ -75,7 +75,7 @@ describe("handler", () => {
         username: "testuser",
       },
     });
-    await expect(handler(baseEvent)).rejects.toThrow("Unauthorized!");
+    await expect(handler(baseEvent)).rejects.toThrow("Unauthorized");
   });
 
   it("throws if scope does not contain required permission", async () => {
@@ -87,7 +87,7 @@ describe("handler", () => {
         scope: "read write",
       },
     });
-    await expect(handler(baseEvent)).rejects.toThrow("Unauthorized!");
+    await expect(handler(baseEvent)).rejects.toThrow("Unauthorized");
   });
 
   it("returns success for valid token", async () => {
