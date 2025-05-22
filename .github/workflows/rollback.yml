@@ -28,13 +28,13 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: us-west-2
 
       - name: Check Change Set Update/Create
         id: change_set_type
         run: |
           STACK_NAME="one-hundred-letters-authorizer-stack-${{ github.event.inputs.environment }}"
-          if aws cloudformation describe-stacks --stack-name "$STACK_NAME" --region us-east-1 >/dev/null 2>&1; then
+          if aws cloudformation describe-stacks --stack-name "$STACK_NAME" --region us-west-2 >/dev/null 2>&1; then
             echo "Updating change set..."
             echo "change_set_type=UPDATE" >> $GITHUB_ENV
           else
@@ -58,7 +58,7 @@ jobs:
             --change-set-name $CHANGE_SET_NAME \
             --change-set-type $CHANGE_SET_TYPE \
             --capabilities CAPABILITY_NAMED_IAM \
-            --region us-east-1
+            --region us-west-2
 
       - name: Wait for Change Set Creation
         run: |
@@ -67,7 +67,7 @@ jobs:
           aws cloudformation wait change-set-create-complete \
             --stack-name $STACK_NAME \
             --change-set-name $CHANGE_SET_NAME \
-            --region us-east-1
+            --region us-west-2
 
       - name: Execute CloudFormation Change Set
         run: |
@@ -76,7 +76,7 @@ jobs:
           aws cloudformation execute-change-set \
             --stack-name $STACK_NAME \
             --change-set-name $CHANGE_SET_NAME \
-            --region us-east-1
+            --region us-west-2
 
       - name: Monitor CloudFormation Stack Status
         run: |
@@ -86,7 +86,7 @@ jobs:
           DONE_STATUSES=("CREATE_COMPLETE" "UPDATE_COMPLETE")
           FAILED_STATUSES=("CREATE_FAILED" "UPDATE_FAILED" "ROLLBACK_FAILED")
           while true; do
-            STATUS=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --region us-east-1 --query "Stacks[0].StackStatus" --output text)
+            STATUS=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --region us-west-2 --query "Stacks[0].StackStatus" --output text)
             echo "Status: $STATUS"
             if [[ " ${DONE_STATUSES[@]} " =~ " ${STATUS} " ]]; then
               echo "Rollback completed successfully!"
