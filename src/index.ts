@@ -15,6 +15,8 @@ function hasScope(scope: string, required: string): boolean {
   return scope.split(" ").includes(required);
 }
 
+const resourceArn = `arn:aws:execute-api:us-west-2:771265364914:jvjtdyrxij/dev/*/*`;
+
 export async function handler(
   event: APIGatewayTokenAuthorizerEvent,
 ): Promise<APIGatewayAuthorizerResult> {
@@ -51,7 +53,7 @@ export async function handler(
           {
             Action: "execute-api:Invoke",
             Effect: "Allow",
-            Resource: event.methodArn,
+            Resource: resourceArn,
           },
         ],
       },
