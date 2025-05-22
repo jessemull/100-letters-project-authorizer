@@ -41,7 +41,7 @@ Resources:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
-                Resource: "arn:aws:logs:*:*:*"
+                Resource: "*"
 
 Outputs:
   LambdaExecutionOneHundredLettersAuthorizerArn:
