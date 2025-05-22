@@ -62,6 +62,6 @@ export async function handler(
     };
   } catch (err) {
     console.error("Token verification failed:", (err as Error).message);
-    throw new Error("Unauthorized!");
+    throw new Error("Unauthorized");
   }
 }
