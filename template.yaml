@@ -34,9 +34,16 @@ Resources:
     Properties:
       FunctionName: !Ref OneHundredLettersAuthorizerFunction
 
+  AllowApiGatewayToInvokeAuthAtEdge:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !GetAtt MyLambdaVersion.FunctionArn
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+
 Outputs:
   OneHundredLettersAuthorizerFunctionArn:
     Description: "ARN of the authorizer function"
-    Value: !Ref MyLambdaVersion
+    Value: !GetAtt MyLambdaVersion.FunctionArn 
     Export:
       Name: !Sub "OneHundredLettersAuthorizerFunctionArn-${Environment}"
