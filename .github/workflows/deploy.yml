@@ -51,7 +51,7 @@ jobs:
         with:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws-region: us-east-1
+          aws-region: us-west-2
 
       - name: Build Lambda Package
         run: |
@@ -74,14 +74,14 @@ jobs:
       - name: Upload Lambda to S3
         run: |
           S3_BUCKET="100-letters-project-authorizer-${{ github.event.inputs.environment }}"
-          aws s3 cp "dist/one-hundred-letters-authorizer.zip" s3://${S3_BUCKET}/authorizer/${ARTIFACT_NAME} --region us-east-1
+          aws s3 cp "dist/one-hundred-letters-authorizer.zip" s3://${S3_BUCKET}/authorizer/${ARTIFACT_NAME} --region us-west-2
 
       - name: Check Change Set Update/Create 
         id: change_set_type
         run: |
           ENVIRONMENT="${{ github.event.inputs.environment }}"
           STACK_NAME="one-hundred-letters-authorizer-stack-${{ github.event.inputs.environment }}"
-          if aws cloudformation describe-stacks --stack-name "$STACK_NAME" --region us-east-1 >/dev/null 2>&1; then
+          if aws cloudformation describe-stacks --stack-name "$STACK_NAME" --region us-west-2 >/dev/null 2>&1; then
             echo "Updating change set..."
             echo "change_set_type=UPDATE" >> $GITHUB_ENV
           else
@@ -99,9 +99,9 @@ jobs:
           FAILED_STATES=("CREATE_FAILED" "ROLLBACK_FAILED" "UPDATE_FAILED" "DELETE_FAILED" "UPDATE_ROLLBACK_FAILED" "UPDATE_ROLLBACK_COMPLETE" "ROLLBACK_COMPLETE")
           if [[ " ${FAILED_STATES[@]} " =~ " ${STATUS} " ]]; then
             echo "Deleting stack due to status..."
-            aws cloudformation delete-stack --stack-name "$STACK_NAME" --region us-east-1
+            aws cloudformation delete-stack --stack-name "$STACK_NAME" --region us-west-2
             echo "Waiting for stack deletion to complete..."
-            aws cloudformation wait stack-delete-complete --stack-name "$STACK_NAME" --region us-east-1
+            aws cloudformation wait stack-delete-complete --stack-name "$STACK_NAME" --region us-west-2
             echo "Stack deleted successfully!"
             echo "change_set_type=CREATE" >> $GITHUB_ENV
           fi
@@ -122,12 +122,12 @@ jobs:
             --change-set-name $CHANGE_SET_NAME \
             --change-set-type $CHANGE_SET_TYPE \
             --capabilities CAPABILITY_NAMED_IAM \
-            --region us-east-1
+            --region us-west-2
           echo "Waiting for change set to be created..."
           aws cloudformation wait change-set-create-complete \
             --stack-name $STACK_NAME \
             --change-set-name $CHANGE_SET_NAME \
-            --region us-east-1
+            --region us-west-2
 
       - name: Check for Applied Changes
         run: |
@@ -137,7 +137,7 @@ jobs:
                     --stack-name $STACK_NAME \
                     --change-set-name $CHANGE_SET_NAME \
                     --query "Changes" \
-                    --region us-east-1)
+                    --region us-west-2)
           if [ "$(echo "$CHANGES" | jq length)" -eq 0 ]; then
             echo "No changes in the change set, skipping execution."
             echo "no_changes=true" >> $GITHUB_ENV
@@ -154,7 +154,7 @@ jobs:
           aws cloudformation execute-change-set \
             --stack-name $STACK_NAME \
             --change-set-name $CHANGE_SET_NAME \
-            --region us-east-1
+            --region us-west-2
 
       - name: Monitor CloudFormation Stack Status
         if: env.no_changes == 'false'
@@ -165,7 +165,7 @@ jobs:
           MAX_RETRIES=30
           RETRY_COUNT=0
           while true; do
-            STATUS=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --region us-east-1 --query "Stacks[0].StackStatus" --output text)
+            STATUS=$(aws cloudformation describe-stacks --stack-name $STACK_NAME --region us-west-2 --query "Stacks[0].StackStatus" --output text)
             echo "Status: $STATUS"
             if [[ " ${DONE_STATUSES[@]} " =~ " ${STATUS} " ]]; then
               echo "Stack update completed successfully!"
@@ -175,7 +175,7 @@ jobs:
             elif [[ " ${FAILED_STATUSES[@]} " =~ " ${STATUS} " ]]; then
               echo "Stack failed to update!"
               echo "Status: $STATUS"
-              aws cloudformation describe-stack-events --stack-name $STACK_NAME --region us-east-1 --query "StackEvents[?ResourceStatus=='$STATUS'].[LogicalResourceId, ResourceStatus, ResourceStatusReason]" --output table
+              aws cloudformation describe-stack-events --stack-name $STACK_NAME --region us-west-2 --query "StackEvents[?ResourceStatus=='$STATUS'].[LogicalResourceId, ResourceStatus, ResourceStatusReason]" --output table
               exit 1
             fi
             RETRY_COUNT=$((RETRY_COUNT + 1))
