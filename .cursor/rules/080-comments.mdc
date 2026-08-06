@@ -1,0 +1,9 @@
+---
+description: "Comment policy — why not what."
+globs:
+  - "**/*.{ts,js}"
+---
+
+# Comments
+
+Follow `docs/COMMENTS.md`: why-not-what; spacing rules; no commented-out code or contradictory notes.

@@ -1,0 +1,11 @@
+---
+description: "Import and module boundary expectations for the authorizer."
+globs:
+  - "src/**/*.ts"
+---
+
+# Imports and boundaries
+
+- No path aliases configured — keep imports shallow.
+- Runtime code in `src/` should not import local `scripts/`.
+- Prefer `jose` + `aws-lambda` types only in the handler bundle surface.

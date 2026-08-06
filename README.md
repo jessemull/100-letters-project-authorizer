@@ -15,38 +15,51 @@ This repository is part of the **100 Letters Project** which includes the follow
 
 ## Table of Contents
 
-1. [Project Overview](#project-overview)
-2. [Environments](#environments)
-3. [Tech Stack](#tech-stack)
-4. [Setup Instructions](#setup-instructions)
-5. [Commits and Commitizen](#commits-and-commitizen)
+1. [Agent / Contributor Governance](#agent--contributor-governance)
+2. [Project Overview](#project-overview)
+3. [Environments](#environments)
+4. [Tech Stack](#tech-stack)
+5. [Setup Instructions](#setup-instructions)
+6. [Commits and Commitizen](#commits-and-commitizen)
    - [Making A Commit](#making-a-commit)
-6. [Linting & Formatting](#linting--formatting)
+7. [Linting & Formatting](#linting--formatting)
    - [Linting Commands](#linting-commands)
    - [Formatting Commands](#formatting-commands)
    - [Pre-Commit Hook](#pre-commit-hook)
-7. [Testing & Code Coverage](#testing--code-coverage)
+8. [Testing & Code Coverage](#testing--code-coverage)
    - [Testing Commands](#testing-commands)
    - [Code Coverage](#code-coverage)
-8. [Building & Packaging](#building--packaging)
+9. [Building & Packaging](#building--packaging)
    - [Summary](#summary)
    - [Install](#install)
    - [Build](#build)
    - [Package](#package)
-9. [Deployment Pipelines](#deployment-pipelines)
-   - [Deployment Strategy](#deployment-strategy)
-   - [Tools Used](#tools-used)
-   - [Pull Request](#pull-request)
-   - [Deploy](#deploy)
-   - [Merge](#merge)
-   - [Rollback](#rollback)
-10. [Connecting to the Bastion Host](#connecting-to-the-bastion-host)
+10. [Deployment Pipelines](#deployment-pipelines)
+
+- [Deployment Strategy](#deployment-strategy)
+- [Tools Used](#tools-used)
+- [Pull Request](#pull-request)
+- [Deploy](#deploy)
+- [Merge](#merge)
+- [Rollback](#rollback)
+
+11. [Connecting to the Bastion Host](#connecting-to-the-bastion-host)
     - [Environment Variables](#environment-variables)
-11. [Cognito Access Token](#cognito-access-token)
+12. [Cognito Access Token](#cognito-access-token)
     - [Generating an Access Token](#generating-an-access-token)
     - [Using an Access Token](#using-an-access-token)
     - [Environment Variables](#environment-variables)
-12. [License](#license)
+13. [License](#license)
+
+## Agent / Contributor Governance
+
+AI agents and contributors should start at **[`CONTEXT.md`](CONTEXT.md)** (mandatory reading order, precedence, quality gates), then [`AGENTS.md`](AGENTS.md) and [`docs/`](docs/).
+
+- Review policy: [`docs/REVIEW.md`](docs/REVIEW.md)
+- Human onboarding: [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md)
+- Quality: `make help` / `make preflight`
+
+Human ops (bastion, Cognito token scripts, deploy workflows) stay in this README — do not duplicate the full agent rule tree here.
 
 ## Project Overview
 

@@ -1,0 +1,15 @@
+---
+description: "Jest coverage and authorizer test expectations."
+globs:
+  - "**/*.{test,spec}.ts"
+  - "jest.config.js"
+---
+
+# Testing
+
+Read `docs/TESTING.md`.
+
+- Keep ≥80% coverage on branches, functions, lines, statements.
+- Mock `jose`; do not call live Cognito in unit tests.
+- Do not delete tests to greenwash coverage.
+- Cover Bearer parsing, verify failures, token_use, scope, success policy.

@@ -54,6 +54,9 @@
     "*.css": "prettier --write",
     "*.md": "prettier --write"
   },
+  "engines": {
+    "node": ">=20"
+  },
   "main": "dist/index.js",
   "name": "one-hundred-letters-authorizer",
   "scripts": {
@@ -63,14 +66,15 @@
     "commit": "git-cz",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "lint": "eslint --ext .ts",
-    "lint:fix": "eslint --ext .ts --fix",
+    "lint": "eslint . --fix",
+    "lint:check": "eslint .",
     "package": "cd dist && zip -rq authorizer.zip ./*",
     "prebuild": "npm run clean",
     "prepare": "husky",
     "test": "jest",
     "test:watch": "jest --watch",
-    "token": "node ./scripts/cognito-token.js"
+    "token": "node ./scripts/cognito-token.js",
+    "typecheck": "tsc --noEmit"
   },
   "version": "1.0.0"
 }
