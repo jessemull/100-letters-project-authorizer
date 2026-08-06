@@ -15,6 +15,8 @@
 
 Region: **us-west-2**. Node: **24**.
 
+Action majors: `actions/checkout@v7`, `actions/setup-node@v7`, `actions/upload-artifact@v7`, `aws-actions/configure-aws-credentials@v6`.
+
 ---
 
 ## Blocking PR gates

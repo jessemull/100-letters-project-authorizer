@@ -5,10 +5,10 @@
     "module": "commonjs",
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES2022",
+    "target": "ES2024",
     "outDir": "dist/",
     "rootDir": ".",
-    "baseUrl": "."
+    "types": ["node", "jest"]
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules", "dist", "build", "coverage", "scripts"]
