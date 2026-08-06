@@ -84,7 +84,7 @@ The **100 Letters Project API** operates in multiple environments to ensure smoo
 
 This project leverages modern web and cloud technologies to provide secure, scalable, and efficient authentication for CloudFront distributions.
 
-- **AWS Lambda**: Provides authentication for the 100 letters project API gateway.
+- **AWS Lambda**: Provides authentication for the 100 letters project API gateway (`nodejs24.x`).
 
 - **Amazon Cognito**: Manages user authentication and authorization, issuing JWT tokens for secure access control.
 
@@ -106,7 +106,7 @@ This tech stack ensures that the **100 Letters Project** remains secure, perform
 
 ## Setup Instructions
 
-To clone the repository and install dependencies follow these steps:
+Use **Node 24** (see `.nvmrc` / `engines`). To clone and install:
 
 1. Clone the repository:
 
@@ -120,11 +120,14 @@ To clone the repository and install dependencies follow these steps:
    cd 100-letters-project-authorizer
    ```
 
-3. Install the root dependencies:
+3. Install dependencies and verify the tree:
 
    ```bash
    npm install
+   make preflight
    ```
+
+`make preflight` runs lint, typecheck, tests (coverage ≥80%), and the webpack build.
 
 ## Commits and Commitizen
 

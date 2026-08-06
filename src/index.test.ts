@@ -2,8 +2,6 @@ import type { APIGatewayTokenAuthorizerEvent } from "aws-lambda";
 import { handler } from "./index";
 import { jwtVerify } from "jose";
 
-process.env.COGNITO_USER_POOL_ID = "us-west-2_fakePool";
-
 jest.mock("jose", () => {
   return {
     jwtVerify: jest.fn(),
@@ -20,14 +18,19 @@ const baseEvent = {
     "arn:aws:execute-api:region:account-id:api-id/stage/method/resource-path",
 } satisfies APIGatewayTokenAuthorizerEvent;
 
-describe("handler", () => {
-  beforeEach(() => {});
+const validPayload = {
+  token_use: "access",
+  sub: "abc123",
+  username: "johndoe",
+  client_id: "fakeClientId",
+  scope: "aws.cognito.signin.user.admin other.scope",
+};
 
+describe("handler", () => {
   let consoleErrorSpy: jest.SpyInstance;
 
   beforeAll(() => {
     consoleErrorSpy = jest.spyOn(console, "error").mockImplementation(() => {});
-    jest.clearAllMocks();
   });
 
   afterAll(() => {
@@ -38,16 +41,16 @@ describe("handler", () => {
     jest.clearAllMocks();
   });
 
-  it("throws if no Authorization header", async () => {
+  it("throws Unauthorized if no Authorization header", async () => {
     await expect(
       handler({ ...baseEvent, authorizationToken: "" }),
-    ).rejects.toThrow("No bearer token!");
+    ).rejects.toThrow("Unauthorized");
   });
 
-  it("throws if Authorization header doesn't start with Bearer", async () => {
+  it("throws Unauthorized if Authorization header doesn't start with Bearer", async () => {
     await expect(
       handler({ ...baseEvent, authorizationToken: "Token abc" }),
-    ).rejects.toThrow("No bearer token!");
+    ).rejects.toThrow("Unauthorized");
   });
 
   it("throws if jwtVerify throws (invalid token)", async () => {
@@ -58,7 +61,27 @@ describe("handler", () => {
   it("throws if token is not an access token", async () => {
     mockedJwtVerify.mockResolvedValueOnce({
       payload: {
+        ...validPayload,
         token_use: "id",
+      },
+    });
+    await expect(handler(baseEvent)).rejects.toThrow("Unauthorized");
+  });
+
+  it("throws if client_id does not match the configured app client", async () => {
+    mockedJwtVerify.mockResolvedValueOnce({
+      payload: {
+        ...validPayload,
+        client_id: "otherClientId",
+      },
+    });
+    await expect(handler(baseEvent)).rejects.toThrow("Unauthorized");
+  });
+
+  it("throws if client_id is missing", async () => {
+    mockedJwtVerify.mockResolvedValueOnce({
+      payload: {
+        token_use: "access",
         sub: "user123",
         username: "testuser",
         scope: "aws.cognito.signin.user.admin",
@@ -73,6 +96,7 @@ describe("handler", () => {
         token_use: "access",
         sub: "user123",
         username: "testuser",
+        client_id: "fakeClientId",
       },
     });
     await expect(handler(baseEvent)).rejects.toThrow("Unauthorized");
@@ -81,9 +105,7 @@ describe("handler", () => {
   it("throws if scope does not contain required permission", async () => {
     mockedJwtVerify.mockResolvedValueOnce({
       payload: {
-        token_use: "access",
-        sub: "user123",
-        username: "testuser",
+        ...validPayload,
         scope: "read write",
       },
     });
@@ -92,12 +114,7 @@ describe("handler", () => {
 
   it("returns success for valid token", async () => {
     mockedJwtVerify.mockResolvedValueOnce({
-      payload: {
-        token_use: "access",
-        sub: "abc123",
-        username: "johndoe",
-        scope: "aws.cognito.signin.user.admin other.scope",
-      },
+      payload: validPayload,
     });
 
     const result = await handler(baseEvent);
@@ -125,6 +142,7 @@ describe("handler", () => {
     mockedJwtVerify.mockResolvedValueOnce({
       payload: {
         token_use: "access",
+        client_id: "fakeClientId",
         scope: "aws.cognito.signin.user.admin",
       },
     });
@@ -135,18 +153,18 @@ describe("handler", () => {
     expect(result?.context?.username).toBe("unknown");
   });
 
-  it("throws if authorizationToken is undefined", async () => {
+  it("throws Unauthorized if authorizationToken is undefined", async () => {
     await expect(
       handler({
         ...baseEvent,
         authorizationToken: undefined as unknown as string,
       }),
-    ).rejects.toThrow("No bearer token!");
+    ).rejects.toThrow("Unauthorized");
   });
 
-  it("throws if authorizationToken is only whitespace", async () => {
+  it("throws Unauthorized if authorizationToken is only whitespace", async () => {
     await expect(
       handler({ ...baseEvent, authorizationToken: "   " }),
-    ).rejects.toThrow("No bearer token!");
+    ).rejects.toThrow("Unauthorized");
   });
 });

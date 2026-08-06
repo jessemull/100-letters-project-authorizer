@@ -15,10 +15,12 @@
 
 ## Authorizer surface
 
-- Fail closed: any verification failure → throw `Unauthorized` (deny).
+- Fail closed: any verification failure → throw `Unauthorized` (deny), including missing Bearer.
+- Require Cognito access tokens (`token_use === "access"`) whose `client_id` matches `COGNITO_USER_POOL_CLIENT_ID` (access tokens use `client_id`, not `aud`).
 - Do not log full JWTs or passwords. Prefer short error messages (`err.message`) already used in the handler.
 - Required scope and `token_use` checks are security controls — changing them needs human review (`docs/GOVERNANCE.md`).
 - IAM policy resource should remain scoped to `event.methodArn` unless a deliberate broader policy is approved.
+- Fail fast at cold start if `COGNITO_USER_POOL_ID` or `COGNITO_USER_POOL_CLIENT_ID` is missing.
 
 ---
 

@@ -6,10 +6,10 @@
 
 ## Authorizer contract
 
-API Gateway TOKEN authorizers treat a thrown error with message **`Unauthorized`** as deny. Other thrown messages may surface differently; keep the public failure path consistent:
+API Gateway TOKEN authorizers treat a thrown error with message **`Unauthorized`** as deny (typically HTTP 401). Other thrown messages may surface as 500. Keep the public failure path consistent:
 
-1. Input validation failures (missing Bearer) may throw early.
-2. JWT / claims failures are caught, logged briefly, and rethrown as `new Error("Unauthorized")`.
+1. Missing / non-Bearer tokens throw `Unauthorized` immediately.
+2. JWT / claims failures (including wrong `client_id`, `token_use`, or scope) are caught, logged briefly, and rethrown as `new Error("Unauthorized")`.
 
 Do not return an explicit Deny policy document unless deliberately changing the authorizer style with human approval — this codebase uses the throw-`Unauthorized` pattern.
 

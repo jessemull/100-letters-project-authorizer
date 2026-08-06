@@ -20,10 +20,11 @@ Region: **us-west-2**. Node: **24**.
 ## Blocking PR gates
 
 - `npm run lint`
-- `npm test` (Jest coverage thresholds in `jest.config.js` + CI HTML threshold check)
+- `npm run typecheck`
+- `npm test` (Jest enforces ≥80% coverage via `jest.config.js`)
 - `npm run build` + `npm run package` (needs Cognito pool secrets for DefinePlugin)
 
-There is no separate typecheck job yet — local `make preflight` includes `tsc --noEmit`. Prefer keeping that green before push (Husky pre-push).
+Local `make preflight` matches lint + typecheck + test + build. Prefer keeping that green before push (Husky pre-push).
 
 ---
 

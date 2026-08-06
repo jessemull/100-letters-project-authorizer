@@ -4,7 +4,17 @@ import {
 } from "aws-lambda";
 import { jwtVerify, createRemoteJWKSet } from "jose";
 
-const COGNITO_USER_POOL_ID = process.env.COGNITO_USER_POOL_ID!;
+const COGNITO_USER_POOL_ID = process.env.COGNITO_USER_POOL_ID;
+const COGNITO_USER_POOL_CLIENT_ID = process.env.COGNITO_USER_POOL_CLIENT_ID;
+
+if (!COGNITO_USER_POOL_ID) {
+  throw new Error("COGNITO_USER_POOL_ID is required");
+}
+
+if (!COGNITO_USER_POOL_CLIENT_ID) {
+  throw new Error("COGNITO_USER_POOL_CLIENT_ID is required");
+}
+
 const JWKS = createRemoteJWKSet(
   new URL(
     `https://cognito-idp.us-west-2.amazonaws.com/${COGNITO_USER_POOL_ID}/.well-known/jwks.json`,
@@ -21,7 +31,7 @@ export async function handler(
   const tokenHeader = event.authorizationToken?.trim();
 
   if (!tokenHeader?.startsWith("Bearer ")) {
-    throw new Error("No bearer token!");
+    throw new Error("Unauthorized");
   }
 
   const token = tokenHeader.slice("Bearer ".length);
@@ -36,12 +46,20 @@ export async function handler(
       throw new Error("Not an access token!");
     }
 
+    // Cognito access tokens use client_id (not aud) for the app client.
+    if (payload.client_id !== COGNITO_USER_POOL_CLIENT_ID) {
+      throw new Error("Invalid client!");
+    }
+
     if (
       typeof payload.scope !== "string" ||
       !hasScope(payload.scope, "aws.cognito.signin.user.admin")
     ) {
       throw new Error("Insufficient permissions!");
     }
+
+    const username =
+      typeof payload.username === "string" ? payload.username : "unknown";
 
     return {
       principalId: payload.sub ?? "unknown",
@@ -56,7 +74,7 @@ export async function handler(
         ],
       },
       context: {
-        username: (payload.username as string) ?? "unknown",
+        username,
         scope: payload.scope,
       },
     };

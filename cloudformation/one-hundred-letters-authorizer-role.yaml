@@ -41,7 +41,9 @@ Resources:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
-                Resource: "*"
+                Resource:
+                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/one-hundred-letters-authorizer-${Environment}"
+                  - !Sub "arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/one-hundred-letters-authorizer-${Environment}:*"
 
 Outputs:
   LambdaExecutionOneHundredLettersAuthorizerArn:

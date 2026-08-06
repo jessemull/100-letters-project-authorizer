@@ -23,9 +23,10 @@ There is no e2e or browser a11y suite in this repo (Lambda-only).
 - Missing / non-Bearer `authorizationToken`
 - JWT verify failures (invalid signature, expired, JWKS errors)
 - Wrong `token_use` (e.g. `id` instead of `access`)
+- Missing or mismatched `client_id` (must match `COGNITO_USER_POOL_CLIENT_ID`)
 - Missing or insufficient `scope` (required: `aws.cognito.signin.user.admin`)
 - Success path: Allow policy on `event.methodArn`, `principalId`, context fields
-- Fail-closed: catch path throws `Unauthorized`
+- Fail-closed: catch path and missing Bearer throw `Unauthorized`
 
 Mock `jose` (`jwtVerify`, `createRemoteJWKSet`) at the module boundary — do not hit real Cognito in unit tests.
 

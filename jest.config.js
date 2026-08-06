@@ -1,6 +1,6 @@
 module.exports = {
   collectCoverage: true,
-  collectCoverageFrom: ["**/*.{ts,tsx}"],
+  collectCoverageFrom: ["src/**/*.{ts,tsx}", "!src/**/*.{test,spec}.{ts,tsx}"],
   coverageDirectory: "./coverage",
   coverageReporters: ["json", "lcov", "text", "clover"],
   coverageThreshold: {
@@ -13,6 +13,7 @@ module.exports = {
   },
   moduleFileExtensions: ["ts", "js", "json", "node"],
   preset: "ts-jest",
+  setupFiles: ["<rootDir>/jest.setup-env.js"],
   testEnvironment: "node",
   testPathIgnorePatterns: ["/node_modules/", "/dist/"],
   transform: {

@@ -29,6 +29,7 @@ async function authenticateUser() {
     console.log(response.AuthenticationResult.AccessToken);
   } catch (error) {
     console.error("Error authenticating user:", error);
+    process.exitCode = 1;
   }
 }
 
