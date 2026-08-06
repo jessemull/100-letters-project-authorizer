@@ -22,7 +22,7 @@ Resolve conflicts upward, never downward.
 
 ## Non-negotiable constraints
 
-- Lambda runtime stays `nodejs20.x` unless a coordinated platform upgrade is approved.
+- Lambda runtime stays `nodejs24.x` unless a coordinated platform upgrade is approved.
 - TypeScript strict mode; ≥ 80% Jest coverage.
 - Conventional Commits + Husky hooks must remain enabled.
 - No hardcoded secrets; Cognito IDs only via env / CI / webpack DefinePlugin.
@@ -47,7 +47,7 @@ Resolve conflicts upward, never downward.
 - CI/CD or CloudFormation / `template.yaml` changes
 - Security-sensitive code (token logging, env handling, policy resource ARNs)
 - Removing tests or lowering coverage thresholds
-- Runtime major upgrades (e.g. Node 20 → 22)
+- Runtime major upgrades (e.g. Node 24 → next Lambda LTS)
 
 ### Requires explicit product decision
 

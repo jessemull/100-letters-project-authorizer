@@ -51,7 +51,7 @@
 
 ### Packaging / infra
 
-- Webpack externals and Node 20 runtime still aligned
+- Webpack externals and Node 24 runtime still aligned
 - CloudFormation / template changes reviewed for env and S3 key params
 
 ### Security

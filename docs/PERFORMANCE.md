@@ -10,7 +10,7 @@
 | ------- | ------------------------- |
 | Memory  | 128 MB                    |
 | Timeout | 5 seconds                 |
-| Runtime | nodejs20.x                |
+| Runtime | nodejs24.x                |
 
 Auth path should stay well under the timeout. Prefer keeping the dependency tree tiny (`jose` only in production deps).
 

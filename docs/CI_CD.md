@@ -13,7 +13,7 @@
 | Deploy       | `.github/workflows/deploy.yml`       | `workflow_dispatch` | Manual deploy **dev** / **prod**          |
 | Rollback     | `.github/workflows/rollback.yml`     | `workflow_dispatch` | Redeploy prior zip                        |
 
-Region: **us-west-2**. Node: **20**.
+Region: **us-west-2**. Node: **24**.
 
 ---
 
@@ -31,6 +31,7 @@ There is no separate typecheck job yet — local `make preflight` includes `tsc 
 
 | CI              | Local                                               |
 | --------------- | --------------------------------------------------- |
+| Node 24         | `engines.node` `>=24`; Lambda `nodejs24.x`          |
 | lint            | `make lint`                                         |
 | test + coverage | `make test`                                         |
 | build           | `make build` (needs Cognito env in `.env` or shell) |

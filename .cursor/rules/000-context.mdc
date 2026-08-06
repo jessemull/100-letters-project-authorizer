@@ -33,7 +33,7 @@ CONTEXT.md > GOVERNANCE.md > ARCHITECTURE.md > domain docs > inline comments
 
 ## Non-negotiables (summary)
 
-- Lambda TOKEN authorizer; Node 20; fail closed
+- Lambda TOKEN authorizer; Node 24; fail closed
 - TypeScript strict; ≥80% Jest coverage
 - Conventional Commits + Husky
 - No hardcoded secrets

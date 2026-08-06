@@ -52,4 +52,4 @@ flowchart LR
 - Upload: `s3://100-letters-project-authorizer-{env}/authorizer/{artifact}.zip`
 - Update stack: CloudFormation `one-hundred-letters-authorizer-stack-{env}` with `S3Key` + `Environment`
 
-Runtime: **Node 20**, handler **`index.handler`**, region **us-west-2**.
+Runtime: **Node 24**, handler **`index.handler`**, region **us-west-2**.

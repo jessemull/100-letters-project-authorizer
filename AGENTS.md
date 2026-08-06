@@ -11,7 +11,7 @@
 | --------------------- | --------------------------------------------------------------------------- |
 | **Project**           | 100 Letters Project Authorizer                                              |
 | **Architecture**      | Single AWS Lambda TOKEN authorizer (API Gateway + Cognito JWT)              |
-| **Platform**          | AWS Lambda `nodejs20.x` (us-west-2)                                         |
+| **Platform**          | AWS Lambda `nodejs24.x` (us-west-2)                                         |
 | **Core Technologies** | TypeScript, `jose`, Webpack 5, Jest, ESLint, CloudFormation                 |
 | **CI/CD**             | GitHub Actions → S3 zip → CloudFormation stack                              |
 | **Git Hooks**         | Husky + lint-staged + Conventional Commits (commitlint); pre-push preflight |

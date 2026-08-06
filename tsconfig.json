@@ -5,7 +5,7 @@
     "module": "commonjs",
     "skipLibCheck": true,
     "strict": true,
-    "target": "ES6",
+    "target": "ES2022",
     "outDir": "dist/",
     "rootDir": ".",
     "baseUrl": "."

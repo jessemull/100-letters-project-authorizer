@@ -51,7 +51,7 @@ These constraints apply to **every change**. No exceptions without explicit huma
 ### Platform and runtime
 
 - **AWS Lambda TOKEN authorizer** for API Gateway — handler is `index.handler` (bundled from `src/index.ts`).
-- **Runtime `nodejs20.x`** — keep local Node, CI (`setup-node`), and `template.yaml` aligned on Node 20.
+- **Runtime `nodejs24.x`** — keep local Node, CI (`setup-node`), and `template.yaml` aligned on Node 24.
 - **Webpack to zip to S3 to CloudFormation** deploy path — do not assume SAM CLI or container images.
 
 ### Auth behavior
