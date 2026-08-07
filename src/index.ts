@@ -40,6 +40,7 @@ export async function handler(
     const { payload } = await jwtVerify(token, JWKS, {
       algorithms: ["RS256"],
       issuer: `https://cognito-idp.us-west-2.amazonaws.com/${COGNITO_USER_POOL_ID}`,
+      clockTolerance: 5,
     });
 
     if (payload.token_use !== "access") {

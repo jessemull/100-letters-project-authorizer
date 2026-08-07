@@ -127,7 +127,9 @@ Use **Node 24** (see `.nvmrc` / `engines`). To clone and install:
    make preflight
    ```
 
-`make preflight` runs lint, typecheck, tests (coverage ≥80%), and the webpack build.
+`make preflight` runs lint, typecheck, tests (coverage ≥80%), and the webpack build (requires Cognito pool/client IDs in `.env`).
+
+**Deploy notes:** Push/merge to `main` deploys **dev**. Cognito pool and client IDs are baked into the webpack bundle at build time (per-environment CI secrets)—not Lambda environment variables. API Gateway invoke permission is scoped per env (`jvjtdyrxij` / `w0sc2foaya`) via `template.yaml` mappings.
 
 ## Commits and Commitizen
 

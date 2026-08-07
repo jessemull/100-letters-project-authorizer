@@ -24,16 +24,16 @@ flowchart LR
 
 ## Folder responsibilities
 
-| Path                 | Responsibility                                              |
-| -------------------- | ----------------------------------------------------------- |
-| `src/index.ts`       | Authorizer handler                                          |
-| `src/index.test.ts`  | Unit tests (mock `jose`)                                    |
-| `scripts/`           | Local Cognito token + bastion helpers; `preflight.sh`       |
-| `webpack.config.js`  | Bundle to `dist/index.js`; inject Cognito env at build time |
-| `template.yaml`      | Function, version, API Gateway invoke permission            |
-| `cloudformation/`    | Supporting S3 artifact bucket + execution role stacks       |
-| `docs/`              | Governance                                                  |
-| `.github/workflows/` | PR checks; merge → dev deploy; manual deploy/rollback       |
+| Path                 | Responsibility                                                       |
+| -------------------- | -------------------------------------------------------------------- |
+| `src/index.ts`       | Authorizer handler                                                   |
+| `src/index.test.ts`  | Unit tests (mock `jose`)                                             |
+| `scripts/`           | Local Cognito token + bastion helpers; `preflight.sh`                |
+| `webpack.config.js`  | Bundle to `dist/index.js`; inject Cognito env at build time          |
+| `template.yaml`      | Function, version, API Gateway invoke permission (per-env SourceArn) |
+| `cloudformation/`    | Supporting S3 artifact bucket + execution role (logs) stacks         |
+| `docs/`              | Governance                                                           |
+| `.github/workflows/` | PR checks; merge → dev deploy; manual deploy/rollback                |
 
 ---
 
@@ -47,9 +47,11 @@ flowchart LR
 
 ## Deploy topology
 
-- Build: `npm run build` → `dist/index.js`
+- Build: `npm run build` → `dist/index.js` (fails if Cognito env missing)
 - Package: `npm run package` → `dist/authorizer.zip`
 - Upload: `s3://100-letters-project-authorizer-{env}/authorizer/{artifact}.zip`
 - Update stack: CloudFormation `one-hundred-letters-authorizer-stack-{env}` with `S3Key` + `Environment`
 
 Runtime: **Node 24**, handler **`index.handler`**, region **us-west-2**.
+
+API Gateway invoke is limited per environment via `Mappings.RestApiIds` in `template.yaml` (`dev` → `jvjtdyrxij`, `prod` → `w0sc2foaya`).

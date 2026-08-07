@@ -168,3 +168,42 @@ describe("handler", () => {
     ).rejects.toThrow("Unauthorized");
   });
 });
+
+describe("module env configuration", () => {
+  const originalEnv = process.env;
+
+  afterEach(() => {
+    process.env = originalEnv;
+    jest.resetModules();
+  });
+
+  it("throws when COGNITO_USER_POOL_ID is missing at load", () => {
+    process.env = {
+      ...originalEnv,
+      COGNITO_USER_POOL_CLIENT_ID: "fakeClientId",
+    };
+    delete process.env.COGNITO_USER_POOL_ID;
+
+    expect(() => {
+      jest.isolateModules(() => {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports -- isolateModules needs CJS reload
+        require("./index");
+      });
+    }).toThrow("COGNITO_USER_POOL_ID is required");
+  });
+
+  it("throws when COGNITO_USER_POOL_CLIENT_ID is missing at load", () => {
+    process.env = {
+      ...originalEnv,
+      COGNITO_USER_POOL_ID: "us-west-2_fakePool",
+    };
+    delete process.env.COGNITO_USER_POOL_CLIENT_ID;
+
+    expect(() => {
+      jest.isolateModules(() => {
+        // eslint-disable-next-line @typescript-eslint/no-require-imports -- isolateModules needs CJS reload
+        require("./index");
+      });
+    }).toThrow("COGNITO_USER_POOL_CLIENT_ID is required");
+  });
+});

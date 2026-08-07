@@ -21,6 +21,7 @@
 - Required scope and `token_use` checks are security controls — changing them needs human review (`docs/GOVERNANCE.md`).
 - IAM policy resource should remain scoped to `event.methodArn` unless a deliberate broader policy is approved.
 - Fail fast at cold start if `COGNITO_USER_POOL_ID` or `COGNITO_USER_POOL_CLIENT_ID` is missing.
+- Lambda resource policy should scope API Gateway invoke to the env's REST API (`SourceArn` via `template.yaml` mappings), not any `apigateway.amazonaws.com` caller.
 
 ---
 

@@ -5,6 +5,15 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 dotenv.config();
 
+const cognitoUserPoolId = process.env.COGNITO_USER_POOL_ID;
+const cognitoUserPoolClientId = process.env.COGNITO_USER_POOL_CLIENT_ID;
+
+if (!cognitoUserPoolId || !cognitoUserPoolClientId) {
+  throw new Error(
+    "COGNITO_USER_POOL_ID and COGNITO_USER_POOL_CLIENT_ID are required for build",
+  );
+}
+
 module.exports = {
   entry: "./src/index.ts",
   devtool: false,
@@ -61,11 +70,9 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      "process.env.COGNITO_USER_POOL_ID": JSON.stringify(
-        process.env.COGNITO_USER_POOL_ID,
-      ),
+      "process.env.COGNITO_USER_POOL_ID": JSON.stringify(cognitoUserPoolId),
       "process.env.COGNITO_USER_POOL_CLIENT_ID": JSON.stringify(
-        process.env.COGNITO_USER_POOL_CLIENT_ID,
+        cognitoUserPoolClientId,
       ),
     }),
   ],

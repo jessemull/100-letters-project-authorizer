@@ -13,6 +13,13 @@ Parameters:
     Type: String
     Description: The S3 key for the lambda function zip file.
 
+Mappings:
+  RestApiIds:
+    dev:
+      Id: jvjtdyrxij
+    prod:
+      Id: w0sc2foaya
+
 Resources:
   OneHundredLettersAuthorizerFunction:
     Type: AWS::Lambda::Function
@@ -28,22 +35,25 @@ Resources:
         S3Key: !Ref S3Key
       Timeout: 5
       MemorySize: 128
-      
+
   MyLambdaVersion:
     Type: AWS::Lambda::Version
     Properties:
       FunctionName: !Ref OneHundredLettersAuthorizerFunction
 
-  AllowApiGatewayToInvokeAuthAtEdge:
+  AllowApiGatewayToInvokeAuthorizer:
     Type: AWS::Lambda::Permission
     Properties:
       FunctionName: !Ref OneHundredLettersAuthorizerFunction
       Action: lambda:InvokeFunction
       Principal: apigateway.amazonaws.com
+      SourceArn: !Sub
+        - "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${ApiId}/authorizers/*"
+        - ApiId: !FindInMap [RestApiIds, !Ref Environment, Id]
 
 Outputs:
   OneHundredLettersAuthorizerFunctionArn:
     Description: "ARN of the authorizer function"
-    Value: !GetAtt MyLambdaVersion.FunctionArn 
+    Value: !GetAtt MyLambdaVersion.FunctionArn
     Export:
       Name: !Sub "OneHundredLettersAuthorizerFunctionArn-${Environment}"
