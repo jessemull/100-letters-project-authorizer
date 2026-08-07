@@ -31,8 +31,14 @@ async function authenticateUser() {
 
   const command = new InitiateAuthCommand(params);
   const response = await client.send(command);
+  const accessToken = response.AuthenticationResult?.AccessToken;
+
+  if (!accessToken) {
+    throw new Error("Cognito did not return an AccessToken");
+  }
+
   console.log("Access Token:");
-  console.log(response.AuthenticationResult.AccessToken);
+  console.log(accessToken);
 }
 
 authenticateUser().catch((error) => {
